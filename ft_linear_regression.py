@@ -6,7 +6,7 @@ import tools as t
 def estimate_price(theta_0=0.0, theta_1=0.0, km=0):
     return theta_0 + (theta_1 * km)
 
-def train(display=False, display_all=False):
+def train(display=False, display_all=False, debug=False):
     learning_ratio=0.3
     theta_0, theta_1 = 0., 0.
     delta_0, delta_1 = 1., 1.
@@ -29,7 +29,8 @@ def train(display=False, display_all=False):
     while abs(delta_0) > 0.001 and abs(delta_1) > 0.001:
         sum_0 = 0.
         sum_1 = 0.
-        print("i = {} theta_0={} theta_1={}".format(i, theta_0, theta_1))
+        if debug:
+            print("i = {} theta_0={} theta_1={}".format(i, theta_0, theta_1))
         max_km, max_price = t.get_max(data)
         min_km, min_price = t.get_min(data)
         for d in scaleddata:
@@ -37,17 +38,20 @@ def train(display=False, display_all=False):
             sum_1 += (estimate_price(theta_0, theta_1, d[0]) - d[1]) * d[0]
         delta_0 = learning_ratio * (sum_0 / m)
         delta_1 = learning_ratio * (sum_1 / m)
-        print("delta_0={} delta_1={}\n".format(delta_0, delta_1))
+        if debug:
+            print("delta_0={} delta_1={}\n".format(delta_0, delta_1))
         theta_0 -= delta_0
         theta_1 -= delta_1
         i += 1
         # Update linear regression line
         if display_all:
             line.set_ydata([estimate_price(theta_0, theta_1 / max_km, 250000), estimate_price(theta_0, theta_1 / max_km, 100)])
-            plt.pause(0.00001)
+            plt.pause(0.001)
 
-    theta_1 /= (max_km)
-    print("----------------------------\ntheta_0={} theta_1={}".format(theta_0, theta_1))
+    theta_1 /= max_km
+    if debug:
+        print("----------------------------")
+    print("theta_0={} theta_1={}".format(theta_0, theta_1))
     t.save_thetas(theta_0, theta_1)
     if display:
         line.set_ydata([estimate_price(theta_0, theta_1, 250000), estimate_price(theta_0, theta_1, 100)])
@@ -60,13 +64,29 @@ def display_graph():
     plt.show()
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "--show":
-            train(True, False)
-        elif sys.argv[1] == "--show-all":
-            train(True, True)
-        else:
+    l = len(sys.argv)
+    s = ""
+    debug = False
+    show = False
+    show_all = False
+    for i in range(l):
+        s += sys.argv[i]
+
+    print(s)
+    if l > 1:
+        if "--show" in s:
+            print("show")
+            show = True
+        if "--show-all" in s:
+            print("show_all")
+            show = True
+            show_all = True
+        if "--debug" in s:
+            print("debug")
+            debug = True
+        if not debug and not show and not show_all:
             print("unknown option, basic training will run")
             train()
+        train(show, show_all, debug)
     else:
         train()

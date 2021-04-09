@@ -26,12 +26,9 @@ def save_thetas(theta_0, theta_1):
 def scale(dataset):
     max_data = max(dataset)
     min_data = min(dataset)
-    print("max={} min={}".format(max_data, min_data))
     scaleddata = []
-    #print("minX: {} maxX:{}".format(min_x, max_x))
     for data in dataset:
         new = [map(data[0], min_data[0], max_data[0], 0, 1), data[1]]
-        #print("old: {}\nnew: {}".format(data, new))
         scaleddata.append(new)
     return (scaleddata)
 
