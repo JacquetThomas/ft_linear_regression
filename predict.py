@@ -3,8 +3,6 @@ import matplotlib.pyplot as plt
 from ft_linear_regression import estimate_price
 from tools import get_data
 from tools import get_thetas
-from tools import scale
-from tools import map
 
 def display(estimated_price, mileage):
     thetas = get_thetas()
@@ -42,7 +40,10 @@ def main():
         main()
 
 if __name__ == "__main__":
-    values = main()
-    if len(sys.argv) > 1 and sys.argv[1] == "-s":
-        display(values[0], values[1])
+    if sys.version_info[0] < 3:
+        print("Usage: python3 predict.py [options]")
+    else:
+        values = main()
+        if len(sys.argv) > 1 and sys.argv[1] == "--show":
+            display(values[0], values[1])
 

@@ -1,9 +1,14 @@
 import csv
+from sys import exit
 
 def get_data():
-    filename = "data.csv"
-    with open(filename, 'r') as f:
-        data=[(int(line["km"]),int(line["price"])) for line in  csv.DictReader(f)]
+    try:
+        filename = "data.csv"
+        with open(filename, 'r') as f:
+            data=[(int(line["km"]),int(line["price"])) for line in  csv.DictReader(f)]
+    except Exception as e:
+        print("message: {}".format(e))
+        exit()
     return data
 
 def get_thetas():
@@ -12,8 +17,7 @@ def get_thetas():
             values = f.readline()
             theta_0, theta_1 = values.split(',')
     except Exception as e:
-        print("message: {}".format(e))
-        theta_0, theta_1 = 0.0, 0.0
+        theta_0, theta_1 = 0., 0.
     return [float(theta_0), float(theta_1)]
 
 def save_thetas(theta_0, theta_1):
@@ -28,7 +32,7 @@ def scale(dataset):
     min_data = min(dataset)
     scaleddata = []
     for data in dataset:
-        new = [map(data[0], min_data[0], max_data[0], 0, 1), data[1]]
+        new = [data[0] / max_data[0], data[1]]
         scaleddata.append(new)
     return (scaleddata)
 
@@ -39,7 +43,3 @@ def get_max(dataset):
 def get_min(dataset):
     min_data = min(dataset)
     return (min_data[0], min_data[1])
-
-def map(value, min, max, new_min, new_max):
-    return (value - min) / float((max - min)) * (new_max - new_min) + new_min
-
