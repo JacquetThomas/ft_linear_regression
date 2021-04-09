@@ -40,10 +40,7 @@ def main():
         main()
 
 if __name__ == "__main__":
-    if sys.version_info[0] < 3:
-        print("Usage: python3 predict.py [options]")
-    else:
-        values = main()
-        if len(sys.argv) > 1 and sys.argv[1] == "--show":
-            display(values[0], values[1])
+    values = main()
+    if len(sys.argv) > 1 and sys.argv[1] == "--show":
+        display(values[0], values[1])
 

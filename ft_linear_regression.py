@@ -64,27 +64,23 @@ def display_graph():
     plt.show()
 
 if __name__ == "__main__":
+    nb_arg = len(sys.argv)
+    concat_args = ""
+    debug, show, show_all = False, False, False
+    for i in range(nb_arg):
+        concat_args += sys.argv[i]
 
-    if sys.version_info[0] < 3:
-        print("Usage: python3 ft_linear_regression.py [options]")
-    else:
-        nb_arg = len(sys.argv)
-        concat_args = ""
-        debug, show, show_all = False, False, False
-        for i in range(nb_arg):
-            concat_args += sys.argv[i]
-
-        if nb_arg > 1:
-            if "--show" in concat_args:
-                show = True
-            if "--show-all" in concat_args:
-                show = True
-                show_all = True
-            if "--debug" in concat_args:
-                debug = True
-            if not debug and not show and not show_all:
-                print("unknown option, basic training will run")
-                train()
-            train(show, show_all, debug)
-        else:
+    if nb_arg > 1:
+        if "--show" in concat_args:
+            show = True
+        if "--show-all" in concat_args:
+            show = True
+            show_all = True
+        if "--debug" in concat_args:
+            debug = True
+        if not debug and not show and not show_all:
+            print("unknown option, basic training will run")
             train()
+        train(show, show_all, debug)
+    else:
+        train()
