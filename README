@@ -1,0 +1,8 @@
+Before everything run ```pip3 install -r requirements.txt``` it will install the required dependencies.
+
+Use python3 for predict.py and ft_linear_regression.py .
+
+ft_linear_regression.py train the model for predict.py .
+
+predict.py give an estimate price for car with the given mileage.
+If ft_linear_regression is not run first and/or theta_file is empty the estimate price will be 0.00 .
