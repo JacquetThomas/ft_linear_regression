@@ -80,7 +80,6 @@ if __name__ == "__main__":
             debug = True
         if not debug and not show and not show_all:
             print("unknown option, basic training will run")
-            train()
         train(show, show_all, debug)
     else:
         train()
